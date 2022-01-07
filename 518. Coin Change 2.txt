@@ -1,0 +1,33 @@
+// Time Complexity : O(mn)
+// Space Complexity : O(mn)
+// Did this code successfully run on Leetcode : yes
+// Any problem you faced while coding this : no
+
+//we store the number of ways that amount can be achieved by using available coins so we add both the ways without the coin
+//and with the coin (in case where j> coins[i-1])ie amount>denomination (thn onlly we can include it)
+
+// Your code here along with comments explaining your approach
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[][] dp = new int[coins.length+1][amount+1];
+        
+        for(int l=0; l<dp.length; l++){
+                dp[l][0]=1;
+            }
+        for(int i=1; i<dp.length; i++){
+            for(int j=1; j<dp[0].length; j++){
+                
+                if(j>=coins[i-1]){
+                    //if amount is greater than denomination
+                    //add ways before this amount and ways with this amount
+                     dp[i][j]=dp[i-1][j] + dp[i][j-coins[i-1]];
+                }else{
+                       //if amount is smaller than denomination
+                    //add ways before this denomination as we cant include this denomination                        for this value of j as its smaller than denomination
+                    dp[i][j]=dp[i-1][j];
+                }        
+            }
+        }
+        return dp[coins.length][amount];    
+    }
+}
